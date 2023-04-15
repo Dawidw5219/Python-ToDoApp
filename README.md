@@ -2,7 +2,7 @@
 
 Użytkownik moze tworzyć zadania, przypisywać im kategorie, ustawiać daty wykonania oraz oznaczać zadania jako ukończone.
 
-## Wymagania techniczne:
+## Opis techniczny i załozenia projektu:
 
 - aplikacja napisana w języku Python z wykorzystaniem biblioteki PyQt5 do tworzenia interfejsu graficznego,
 - aplikacja uzywa SQLite do przechowywania danych o zadaniach,
@@ -19,6 +19,8 @@ Użytkownik moze tworzyć zadania, przypisywać im kategorie, ustawiać daty wyk
 - Dokumentacja PyQt5: https://www.riverbankcomputing.com/static/Docs/PyQt5/
 - Dokumentacja SQLite w Pythonie: https://docs.python.org/3/library/sqlite3.html
 - Pakiet pysqlite3 implementującej SQLite w Phythonie https://github.com/coleifer/pysqlite3
+
+## Opis klas
 
 Klasa Task zawiera konstruktor, który inicjuje pola klasy oraz metodę save_to_database(), która zapisuje zadanie do bazy danych, oraz metodę get_all_from_database(), która zwraca listę wszystkich zadań z bazy danych.
 
