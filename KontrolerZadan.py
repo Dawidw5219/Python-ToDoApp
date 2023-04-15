@@ -10,22 +10,22 @@ class KontrolerZadan:
     def __init__(self):
         self.zadania = []
 
-    def dodaj_zadanie(self, task):
-        task.zapisz_do_bazy()
-        self.zadania.append(task)
+    def dodaj_zadanie(self, zadanie):
+        zadanie.zapisz_do_bazy()
+        self.zadania.append(zadanie)
 
-    def usun_zadanie(self, index):
-        zadanie = self.zadania[index]
+    def usun_zadanie(self, i):
+        zadanie = self.zadania[i]
         polacznie = sqlite3.connect('zadania.db')
         c = polacznie.cursor()
         c.execute('DELETE FROM zadania WHERE utworzono = ?',
                   (zadanie.utworzono.isoformat(),))
         polacznie.commit()
         polacznie.close()
-        self.zadania.pop(index)
+        self.zadania.pop(i)
 
-    def oznacz_jako_ukonczone(self, index):
-        zadanie = self.zadania[index]
+    def oznacz_jako_ukonczone(self, i):
+        zadanie = self.zadania[i]
         zadanie.completed = True
         polacznie = sqlite3.connect('zadania.db')
         xdd = "%r" % (zadanie.utworzono.isoformat())

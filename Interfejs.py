@@ -6,7 +6,7 @@ from KontrolerZadan import KontrolerZadan
 from Zadanie import Zadanie
 
 ###
-# Klasa MainWindow tworzy interfejs użytkownika i implementuje logikę aplikacji. Użytkownik może dodawać nowe zadania, usuwać je, oznaczać jako ukończone oraz wyświetlać ich szczegóły. Aplikacja korzysta z klasy KontrolerZadan do zarządzania zadaniami oraz klasy Zadania do reprezentowania pojedynczych zadań i zapisywania ich do bazy danych.
+# Klasa Interfejs tworzy interfejs użytkownika i implementuje logikę aplikacji. Użytkownik może dodawać nowe zadania, usuwać je, oznaczać jako ukończone oraz wyświetlać ich szczegóły. Aplikacja korzysta z klasy KontrolerZadan do zarządzania zadaniami oraz klasy Zadanie do reprezentowania pojedynczych zadań i zapisywania ich do bazy danych.
 ###
 
 
@@ -26,7 +26,7 @@ class Interfejs(QMainWindow):
         self.kategorie = QComboBox()
         self.kategorie.addItems(['Praca', 'Prywatne', 'Inne'])
         due_date_label = QLabel('Termin (koniecznie w formacie YYYY-MM-DD): ')
-        self.due_date_input = QLineEdit()
+        self.termin_pole = QLineEdit()
         dodaj_etykieta = QPushButton('Dodaj zadanie')
         usun_etykieta = QPushButton('Usuń zadanie')
         oznacz_jako_ukoncone_etykieta = QPushButton('Oznacz jako ukończone')
@@ -43,7 +43,7 @@ class Interfejs(QMainWindow):
         formularz.addWidget(category_label, 2, 0)
         formularz.addWidget(self.kategorie, 2, 1)
         formularz.addWidget(due_date_label, 3, 0)
-        formularz.addWidget(self.due_date_input, 3, 1)
+        formularz.addWidget(self.termin_pole, 3, 1)
         formularz.addWidget(dodaj_etykieta, 4, 0, 1, 2)
         formularz.addWidget(usun_etykieta, 5, 0, 1, 2)
         formularz.addWidget(oznacz_jako_ukoncone_etykieta, 6, 0, 1, 2)
@@ -79,7 +79,7 @@ class Interfejs(QMainWindow):
         nazwa = self.nazwa_etykieta.text()
         opis = self.opis_etykieta.toPlainText()
         kategoria = self.kategorie.currentText()
-        termin = self.due_date_input.text()
+        termin = self.termin_pole.text()
         if termin:
             termin = datetime.strptime(termin, '%Y-%m-%d')
         zadanie = Zadanie(nazwa, opis, kategoria, termin)
@@ -112,7 +112,7 @@ class Interfejs(QMainWindow):
         self.nazwa_etykieta.clear()
         self.opis_etykieta.clear()
         self.kategorie.setCurrentIndex(0)
-        self.due_date_input.clear()
+        self.termin_pole.clear()
 
 
 app = QApplication(sys.argv)

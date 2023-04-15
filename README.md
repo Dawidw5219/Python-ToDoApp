@@ -79,41 +79,6 @@ ERROR: Could not build wheels for pysqlite3, which is required to install pyproj
 
 nalezy skorzystac z intrukcji opisanej na stronie https://www.pythonpool.com/error-legacy-install-failure/
 
-class TaskManager:
+## Wykresy klas
 
-    def __init__(self):
-        self.tasks = []
-
-    def add_task(self, task):
-        task.save_to_database()
-        self.tasks.append(task)
-
-    def remove_task(self, index):
-        task = self.tasks[index]
-        polacznie = sqlite3.connect('tasks.db')
-        c = polacznie.cursor()
-        c.execute('DELETE FROM tasks WHERE created_at = ?',
-                  (task.created_at.isoformat(),))
-        polacznie.commit()
-        polacznie.close()
-        self.tasks.pop(index)
-
-    def mark_task_as_completed(self, index):
-        task = self.tasks[index]
-        task.completed = True
-        polacznie = sqlite3.connect('tasks.db')
-        c = polacznie.cursor()
-        c.execute('UPDATE tasks SET completed = ? WHERE created_at = ?',
-                  (True, task.created_at.isoformat()))
-        polacznie.commit()
-        polacznie.close()
-
-    def get_all_tasks(self):
-        self.tasks = Task.get_all_from_database()
-        return self.tasks
-
-class Task:
-def **init**(self, name, description, category, due_date=None, completed=False):
-self.name = name
-self.description = description
-self.category = category
+pyreverse -p Zadaniomat _.py && dot -Tpng -o uml.jpg _.dot

@@ -1,0 +1,13 @@
+digraph "packages_Zadaniomat" {
+rankdir=BT
+charset="utf-8"
+"Interfejs" [color="black", label=<Interfejs>, shape="box", style="solid"];
+"KontrolerZadan" [color="black", label=<KontrolerZadan>, shape="box", style="solid"];
+"Zadanie" [color="black", label=<Zadanie>, shape="box", style="solid"];
+"init_db" [color="black", label=<init_db>, shape="box", style="solid"];
+"main" [color="black", label=<main>, shape="box", style="solid"];
+"Interfejs" -> "KontrolerZadan" [arrowhead="open", arrowtail="none"];
+"Interfejs" -> "Zadanie" [arrowhead="open", arrowtail="none"];
+"KontrolerZadan" -> "Zadanie" [arrowhead="open", arrowtail="none"];
+"main" -> "Interfejs" [arrowhead="open", arrowtail="none"];
+}

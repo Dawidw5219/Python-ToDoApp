@@ -1,0 +1,8 @@
+digraph "classes_Zadaniomat" {
+rankdir=BT
+charset="utf-8"
+"Interfejs.Interfejs" [color="black", fontcolor="black", label=<{Interfejs|kategorie<br ALIGN="LEFT"/>kontroler_zadan<br ALIGN="LEFT"/>lista_zadan<br ALIGN="LEFT"/>nazwa_etykieta<br ALIGN="LEFT"/>opis_etykieta<br ALIGN="LEFT"/>termin_pole<br ALIGN="LEFT"/>|dodaj_zadanie()<br ALIGN="LEFT"/>inicjalizacja_ui()<br ALIGN="LEFT"/>odznacz_zadanie()<br ALIGN="LEFT"/>pokaz_szczegoly(item)<br ALIGN="LEFT"/>usun_zadanie()<br ALIGN="LEFT"/>wyczysc_formularz()<br ALIGN="LEFT"/>zaladuj_zadania()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"KontrolerZadan.KontrolerZadan" [color="black", fontcolor="black", label=<{KontrolerZadan|zadania : list<br ALIGN="LEFT"/>|dodaj_zadanie(zadanie)<br ALIGN="LEFT"/>oznacz_jako_ukonczone(i)<br ALIGN="LEFT"/>usun_zadanie(i)<br ALIGN="LEFT"/>wszystkie_zadania()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"Zadanie.Zadanie" [color="black", fontcolor="black", label=<{Zadanie|datetime : datetime<br ALIGN="LEFT"/>kategoria<br ALIGN="LEFT"/>nazwa<br ALIGN="LEFT"/>opis<br ALIGN="LEFT"/>termin : NoneType<br ALIGN="LEFT"/>ukonczono : bool<br ALIGN="LEFT"/>utworzono : datetime<br ALIGN="LEFT"/>|odczytaj_wszystkie_z_bazy()<br ALIGN="LEFT"/>zapisz_do_bazy()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"KontrolerZadan.KontrolerZadan" -> "Interfejs.Interfejs" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="kontroler_zadan", style="solid"];
+}

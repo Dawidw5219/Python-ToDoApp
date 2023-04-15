@@ -6,10 +6,7 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    ".vscode": true,
-    "__pycache__": true,
-    "LICENSE.MD": true
+    "**/Thumbs.db": true
   },
-  "hide-files.files": [".vscode", "__pycache__", "LICENSE.MD"]
+  "hide-files.files": []
 }

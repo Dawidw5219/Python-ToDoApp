@@ -1,7 +1,7 @@
 # Nazwa: Zadaniomat
 # Autor: Dawid Wiewiórski
 # Licencja: MIT
-# Wersja: 1.0.0
+# Wersja: 1.2.0
 
 from Interfejs import Interfejs
 
@@ -10,11 +10,9 @@ from Interfejs import Interfejs
 ###
 
 
-def main():
-    print("Start programu ToDo")
+def __init__():
     Interfejs()
-    print("Koniec wykonywania programu ToDo")
 
 
 if __name__ == "__main__":
-    main()
+    __init__()
