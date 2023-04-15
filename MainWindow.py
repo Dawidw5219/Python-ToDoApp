@@ -1,34 +1,36 @@
+import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QLabel, QLineEdit, QTextEdit, QComboBox, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QListWidget, QListWidgetItem, QMessageBox
 from PyQt5.QtCore import Qt
 from datetime import datetime
-import TaskManager
+from TaskManager import KontrolerZadan
+from Task import Zadanie
 
 
-class MainWindow(QMainWindow):
+class Interfejs(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('Task Manager')
-        self.task_manager = TaskManager()
-        self.init_ui()
+        self.setWindowTitle('Aplikacja ToDo: Zadaniomat')
+        self.task_manager = KontrolerZadan()
+        self.inicjalizacja_ui()
 
-    def init_ui(self):
+    def inicjalizacja_ui(self):
         # create widgets
-        name_label = QLabel('Name:')
+        name_label = QLabel('Nazwa:')
         self.name_input = QLineEdit()
-        description_label = QLabel('Description:')
+        description_label = QLabel('Opis:')
         self.description_input = QTextEdit()
-        category_label = QLabel('Category:')
+        category_label = QLabel('Kategoria:')
         self.category_input = QComboBox()
-        self.category_input.addItems(['Work', 'Personal', 'Other'])
-        due_date_label = QLabel('Due date:')
+        self.category_input.addItems(['Praca', 'Prywatne', 'Inne'])
+        due_date_label = QLabel('Termin (koniecznie w formacie YYYY-MM-DD): ')
         self.due_date_input = QLineEdit()
-        add_button = QPushButton('Add')
-        remove_button = QPushButton('Remove')
-        mark_as_completed_button = QPushButton('Mark as completed')
+        add_button = QPushButton('Dodaj zadanie')
+        remove_button = QPushButton('Usuń zadanie')
+        mark_as_completed_button = QPushButton('Oznacz jako ukończone')
         self.task_list = QListWidget()
         self.task_list.setSelectionMode(QListWidget.SingleSelection)
 
-        # create layout
+        # layout
         form_layout = QGridLayout()
         form_layout.addWidget(name_label, 0, 0)
         form_layout.addWidget(self.name_input, 0, 1)
@@ -46,21 +48,21 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(form_layout)
         main_layout.addWidget(self.task_list)
 
-        # create widget
+        # widzety
         widget = QWidget()
         widget.setLayout(main_layout)
         self.setCentralWidget(widget)
 
-        # connect signals and slots
-        add_button.clicked.connect(self.add_task)
-        remove_button.clicked.connect(self.remove_task)
-        mark_as_completed_button.clicked.connect(self.mark_task_as_completed)
-        self.task_list.itemDoubleClicked.connect(self.show_task_details)
+        # przyciski
+        add_button.clicked.connect(self.dodaj_zadanie)
+        remove_button.clicked.connect(self.usun_zadanie)
+        mark_as_completed_button.clicked.connect(self.odznacz_zadanie)
+        self.task_list.itemDoubleClicked.connect(self.pokaz_szczegoly)
 
-        # load tasks from database
-        self.load_tasks()
+        # zaladowanie danych z sqla
+        self.zaladuj_zadania()
 
-    def load_tasks(self):
+    def zaladuj_zadania(self):
         self.task_list.clear()
         tasks = self.task_manager.get_all_tasks()
         for task in tasks:
@@ -70,49 +72,47 @@ class MainWindow(QMainWindow):
                 item.setCheckState(Qt.Checked)
             self.task_list.addItem(item)
 
-    def add_task(self):
+    def dodaj_zadanie(self):
         name = self.name_input.text()
         description = self.description_input.toPlainText()
         category = self.category_input.currentText()
         due_date = self.due_date_input.text()
         if due_date:
             due_date = datetime.strptime(due_date, '%Y-%m-%d')
-        task = Task(name, description, category, due_date)
+        task = Zadanie(name, description, category, due_date)
         self.task_manager.add_task(task)
-        self.load_tasks()
-        self.clear_form()
+        self.zaladuj_zadania()
+        self.wyczysc_formularz()
 
-    def remove_task(self):
+    def usun_zadanie(self):
         index = self.task_list.currentRow()
         if index >= 0:
             confirm = QMessageBox.question(
-                self, 'Confirm', 'Are you sure you want to remove this task?', QMessageBox.Yes | QMessageBox.No)
+                self, 'Zatwierdz', 'Jestes pewny, ze chcesz usunac to zadanie?', QMessageBox.Yes | QMessageBox.No)
             if confirm == QMessageBox.Yes:
                 self.task_manager.remove_task(index)
-                self.load_tasks()
+                self.zaladuj_zadania()
 
-    def mark_task_as_completed(self):
+    def odznacz_zadanie(self):
         index = self.task_list.currentRow()
         if index >= 0:
             self.task_manager.mark_task_as_completed(index)
-            self.load_tasks()
+            self.zaladuj_zadania()
 
-    def show_task_details(self, item):
+    def pokaz_szczegoly(self, item):
         index = self.task_list.currentRow()
         task = self.task_manager.tasks[index]
-        message = f'Name: {task.name}\nDescription: {task.description}\nCategory: {task.category}\nCreated at: {task.created_at}\nDue date: {task.due_date}\nCompleted: {task.completed}'
-        QMessageBox.information(self, 'Task details', message)
+        message = f'Nazwa: {task.name}\nOpis: {task.description}\nKategoria: {task.category}\nUworzono: {task.created_at}\nTermin: {task.due_date}\nWykonano: {task.completed}'
+        QMessageBox.information(self, 'Szczegóły zadania', message)
 
-    def clear_form(self):
+    def wyczysc_formularz(self):
         self.name_input.clear()
         self.description_input.clear()
         self.category_input.setCurrentIndex(0)
         self.due_date_input.clear()
 
 
-if __name__ == '__main__':
-    import sys
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
+app = QApplication(sys.argv)
+window = Interfejs()
+window.show()
+sys.exit(app.exec_())

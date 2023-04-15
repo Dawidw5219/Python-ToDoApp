@@ -2,12 +2,12 @@ import sqlite3
 from datetime import datetime
 
 
-class Task:
+class Zadanie:
     def __init__(self, name, description, category, due_date=None, completed=False):
+        self.created_at = datetime.now()
         self.name = name
         self.description = description
         self.category = category
-        self.created_at = datetime.now()
         self.due_date = due_date
         self.completed = completed
 
@@ -27,9 +27,9 @@ class Task:
         rows = c.fetchall()
         tasks = []
         for row in rows:
-            task = Task(row[1], row[2], row[3], row[4], row[5])
+            task = Zadanie(row[1], row[2], row[3], row[4], row[5])
             task.created_at = datetime.fromisoformat(row[0])
-            task.completed = bool(row[6])
+            # task.completed = bool(row[5])
             tasks.append(task)
         conn.close()
         return tasks

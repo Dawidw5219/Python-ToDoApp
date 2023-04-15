@@ -1,12 +1,12 @@
-# Aplikacja do zarządzania zadaniami napisana w Phyton 3 przy uzyciu bibliotek SQLite oraz PyQt5
+# Aplikacja "Zadaniomat" do zarządzania zadaniami napisana w Phyton 3 przy uzyciu bibliotek SQLite oraz PyQt5
 
 Użytkownik moze tworzyć zadania, przypisywać im kategorie, ustawiać daty wykonania oraz oznaczać zadania jako ukończone.
 
 ## Wymagania techniczne:
 
-- aplikacja powinna być napisana w języku Python z wykorzystaniem biblioteki PyQt5 do tworzenia interfejsu graficznego,
-- aplikacja powinna używać SQLite do przechowywania danych o zadaniach,
-- aplikacja powinna składać się z trzech klas: Task, TaskManager oraz MainWindow.
+- aplikacja napisana w języku Python z wykorzystaniem biblioteki PyQt5 do tworzenia interfejsu graficznego,
+- aplikacja uzywa SQLite do przechowywania danych o zadaniach,
+- aplikacja składa się z trzech klas: Task, TaskManager oraz MainWindow.
 
 ## Opis klas:
 
@@ -18,6 +18,7 @@ Użytkownik moze tworzyć zadania, przypisywać im kategorie, ustawiać daty wyk
 
 - Dokumentacja PyQt5: https://www.riverbankcomputing.com/static/Docs/PyQt5/
 - Dokumentacja SQLite w Pythonie: https://docs.python.org/3/library/sqlite3.html
+- Pakiet pysqlite3 implementującej SQLite w Phythonie https://github.com/coleifer/pysqlite3
 
 Klasa Task zawiera konstruktor, który inicjuje pola klasy oraz metodę save_to_database(), która zapisuje zadanie do bazy danych, oraz metodę get_all_from_database(), która zwraca listę wszystkich zadań z bazy danych.
 
@@ -31,6 +32,7 @@ Plik należy umieścić w tym samym katalogu co plik z kodem aplikacji.
 - Zainstalowany w systemie Pythona w wersji 3
 - Zainstalowany domyślny dla Python3 system zarządzania pakietami o nazwie pip3
 - Zainstalowany w systemie SQLite
+- Wsparcie dla obsługi biblioteki PyQt5
 - Zainstalowane zaleznosci programu np. za pomocą ponizszych komend
 
 ```bash
@@ -54,14 +56,17 @@ CREATE TABLE tasks (
 );
 ```
 
-3. Uruchom program z pliku main.py
-4. Gotowe!
+1. Uruchom program
+   ```python
+   python3 -m main.py
+   ```
+2. Gotowe!
 
 ## Rozwiązywanie problemów
 
 W przypadku wystąpienia następującego błędu w tracie instalacją pakietu pysqlite3:
 
-```bash
+```
 ERROR: Failed building wheel for pysqlite3
 Running setup.py clean for pysqlite3
 Failed to build pysqlite3
@@ -69,3 +74,42 @@ ERROR: Could not build wheels for pysqlite3, which is required to install pyproj
 ```
 
 nalezy skorzystac z intrukcji opisanej na stronie https://www.pythonpool.com/error-legacy-install-failure/
+
+class TaskManager:
+
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, task):
+        task.save_to_database()
+        self.tasks.append(task)
+
+    def remove_task(self, index):
+        task = self.tasks[index]
+        conn = sqlite3.connect('tasks.db')
+        c = conn.cursor()
+        c.execute('DELETE FROM tasks WHERE created_at = ?',
+                  (task.created_at.isoformat(),))
+        conn.commit()
+        conn.close()
+        self.tasks.pop(index)
+
+    def mark_task_as_completed(self, index):
+        task = self.tasks[index]
+        task.completed = True
+        conn = sqlite3.connect('tasks.db')
+        c = conn.cursor()
+        c.execute('UPDATE tasks SET completed = ? WHERE created_at = ?',
+                  (True, task.created_at.isoformat()))
+        conn.commit()
+        conn.close()
+
+    def get_all_tasks(self):
+        self.tasks = Task.get_all_from_database()
+        return self.tasks
+
+class Task:
+def **init**(self, name, description, category, due_date=None, completed=False):
+self.name = name
+self.description = description
+self.category = category
